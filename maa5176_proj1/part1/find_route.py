@@ -4,6 +4,23 @@
 import sys
 from collections import defaultdict
 
+def findPath(expandedList, graph):
+
+    print(expandedList)
+    
+    prevNode = "Kassel"
+
+    for node in reversed(expandedList):
+        print(node)
+        if(node[1] == prevNode):
+            print("Distance between " + node[1] + " and " + prevNode + "is " + graph[node[0]][prevNode])
+            prevNode = node[2]
+
+
+    
+
+    return "idk"
+
 def expand(currentNode, graph):
 
     # successors <--- the empty set
@@ -23,17 +40,18 @@ def expand(currentNode, graph):
         # print("The distance is:  ", end="")
         # print(distance)
 
+        # Stores the parent of the child (currentNode) in a variable
+        parent = currentNode[0]
+
         # This creates a new node with the child 
         # and direct distance from the start
-        s = [child,distance]
+        s = [child,distance,parent]
         # print(s)
 
         # Add each successor to the array
         successors.append(s)
 
     # print(successors)
-
-
 
     # Return array of successors 
     # [name,cost from start] of each child
@@ -49,9 +67,12 @@ def uniformCostSearch(graph, origin_city, destination_city):
     nodesExpanded = 0
     nodesGenerated = 0
 
-    fringe.append([origin_city,0])
+    expandedList = []
 
-    dummyCount = 0
+    fringe.append([origin_city,0,"origin"])
+    nodesGenerated = + 1
+
+
 
     while True:
         # if the fringe is empty ---> return fail
@@ -64,6 +85,13 @@ def uniformCostSearch(graph, origin_city, destination_city):
 
         # Goal test
         if (currentNode[0] == destination_city):
+            #debug
+            print("THE GOAL NODE IS:")
+            print(currentNode)
+            # Adds goal node to expanded list (goal is not expanded, but this allows us to calculate the path)
+            expandedList.append(currentNode)
+            findPath(expandedList, graph)
+
             print("Nodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
             print("The distance between them is : " + str(currentNode[1]) + " km")
@@ -76,6 +104,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
             closed.append(currentNode[0])
 
             # Expand node
+            expandedList.append(currentNode)
             successors = expand(currentNode, graph)
             nodesExpanded+=1
             nodesGenerated += len(successors)
