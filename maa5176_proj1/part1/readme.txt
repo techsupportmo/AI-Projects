@@ -3,8 +3,11 @@ Project 1 Part 1 README
 Mohammed Ahmed
 1001655176
 
-- The programming language used for the task was Python
+- The programming language used for the task was Python3
 
 - Structure of the code:
 
 - How to run the code:
+
+Type in:
+python3 find_route.py input1.txt Bremen Kassel
