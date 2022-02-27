@@ -46,6 +46,9 @@ def uniformCostSearch(graph, origin_city, destination_city):
     closed = []
     fringe = []
 
+    nodesExpanded = 0
+    nodesGenerated = 0
+
     fringe.append([origin_city,0])
 
     dummyCount = 0
@@ -54,22 +57,30 @@ def uniformCostSearch(graph, origin_city, destination_city):
         # if the fringe is empty ---> return fail
         if len(fringe) == 0:
             return "search failed"
-        
-        
+ 
 
         # pop node from fringe
         currentNode = fringe.pop(0)
 
         # Goal test
         if (currentNode[0] == destination_city):
+            print("Nodes expanded: " + str(nodesExpanded))
+            print("Nodes generated: " + str(nodesGenerated))
+            print("The distance between them is : " + str(currentNode[1]) + " km")
+            print("Route:")
             return "Goal reached"
 
         # Check if current node is in closed set
         if currentNode[0] not in closed:
             # Add current node to closed set
             closed.append(currentNode[0])
+
             # Expand node
-            fringe = fringe + expand(currentNode, graph)
+            successors = expand(currentNode, graph)
+            nodesExpanded+=1
+            nodesGenerated += len(successors)
+            fringe = fringe + successors
+            
 
             # Sort the fringe
             fringe.sort(key=lambda x: x[1])
@@ -78,11 +89,8 @@ def uniformCostSearch(graph, origin_city, destination_city):
             print(fringe)
             print("Closed:")
             print(closed)
-            dummyCount+=1
             print("\n\n")
 
-            # if(dummyCount > 5):
-            #     break
 
             
 
@@ -126,18 +134,12 @@ inputArray = []
 
 for line in Lines:
     # Removes newline
-
-    
-
     currentline = line.strip()
-
+    # Removes last line (END OF INPUT)
     if(currentline == 'END OF INPUT'):
         break
-    
-
     #split apart contents of line by the spaces (seperate each operator/operand)
     tokens = currentline.split(' ')
-
     inputArray.append(tokens)
     # print(tokens)
 
@@ -159,11 +161,6 @@ if (n == 4):
     print(uniformCostSearch(graph, origin_city, destination_city))
     
     
-
-
-
-print("The distance between them is:  ", end = "")
-print(inputArray[0][2]) # NOT ACTUAL DISTANCE
 
 
 # Close file
