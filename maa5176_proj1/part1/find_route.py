@@ -4,17 +4,22 @@
 import sys
 from collections import defaultdict
 
-def findPath(expandedList, graph):
+def findPath(destination_city, expandedList, graph):
 
     print(expandedList)
     
-    prevNode = "Kassel"
+    childNode = destination_city
 
     for node in reversed(expandedList):
-        print(node)
-        if(node[1] == prevNode):
-            print("Distance between " + node[1] + " and " + prevNode + "is " + graph[node[0]][prevNode])
-            prevNode = node[2]
+        #print(node)
+        #print(node[0])
+        if(node[0] == childNode and node[2] != 'origin'):
+            # print("Distance between " + node[0] + " and " + childNode + "is " + graph[node[2]][childNode])
+            #print(node[0])
+            #print(graph[node[2]][childNode])
+            #print(node[2])
+            print("Distance between " + node[0] + " and " + node[2] + " is " + graph[node[2]][childNode])
+            childNode = node[2]
 
 
     
@@ -90,7 +95,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
             print(currentNode)
             # Adds goal node to expanded list (goal is not expanded, but this allows us to calculate the path)
             expandedList.append(currentNode)
-            findPath(expandedList, graph)
+            findPath(destination_city, expandedList, graph)
 
             print("Nodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
