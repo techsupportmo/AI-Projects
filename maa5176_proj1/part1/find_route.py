@@ -4,27 +4,34 @@
 import sys
 from collections import defaultdict
 
+# ---- Node ---- #
+# [city, total_cost , parent] #
+
 def findPath(destination_city, expandedList, graph):
 
-    print(expandedList)
+    # print(expandedList)
+
+    route = []
     
+    # stores goal node as the first child node
     childNode = destination_city
 
+    # This essentially traces back the path we took from 
+    # the goal to the start
     for node in reversed(expandedList):
-        #print(node)
-        #print(node[0])
+        # Checks only cities we traversed within expanded list
         if(node[0] == childNode and node[2] != 'origin'):
-            # print("Distance between " + node[0] + " and " + childNode + "is " + graph[node[2]][childNode])
-            #print(node[0])
-            #print(graph[node[2]][childNode])
-            #print(node[2])
-            print("Distance between " + node[0] + " and " + node[2] + " is " + graph[node[2]][childNode])
+            # node[2] is parent 
+            # node[0] is child
+            route.insert(0,"Distance between " + node[2] + " and " + node[0] + " is " + graph[node[2]][childNode] + " km")
+            # Go up a depth level
             childNode = node[2]
 
+    # Print route in correct order
+    for path in route:
+        print(path)
 
-    
-
-    return "idk"
+    return " "
 
 def expand(currentNode, graph):
 
@@ -91,17 +98,17 @@ def uniformCostSearch(graph, origin_city, destination_city):
         # Goal test
         if (currentNode[0] == destination_city):
             #debug
-            print("THE GOAL NODE IS:")
-            print(currentNode)
+            #print("THE GOAL NODE IS:")
+            #print(currentNode)
             # Adds goal node to expanded list (goal is not expanded, but this allows us to calculate the path)
             expandedList.append(currentNode)
-            findPath(destination_city, expandedList, graph)
 
             print("Nodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
             print("The distance between them is : " + str(currentNode[1]) + " km")
             print("Route:")
-            return "Goal reached"
+            findPath(destination_city, expandedList, graph)
+            return "\n"
 
         # Check if current node is in closed set
         if currentNode[0] not in closed:
@@ -119,6 +126,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
             # Sort the fringe
             fringe.sort(key=lambda x: x[1])
 
+            # 
             print("Fringe:")
             print(fringe)
             print("Closed:")
