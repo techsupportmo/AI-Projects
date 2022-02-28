@@ -5,7 +5,9 @@ import sys
 from collections import defaultdict
 
 # ---- Node ---- #
-# [city, total_cost , parent] #
+# [city, total_cost , parent, heuristic, fn] #
+
+# python3 find_route.py input1.txt Bremen Kassel h_kassel.txt
 
 def findPath(destination_city, expandedList, graph):
 
@@ -23,7 +25,7 @@ def findPath(destination_city, expandedList, graph):
         if(node[0] == childNode and node[2] != 'origin'):
             # node[2] is parent 
             # node[0] is child
-            route.insert(0,"Distance between " + node[2] + " and " + node[0] + " is " + graph[node[2]][childNode] + " km")
+            route.insert(0,node[2] + " to " + node[0] + ", " + graph[node[2]][childNode] + " km")
             # Go up a depth level
             childNode = node[2]
 
@@ -89,6 +91,10 @@ def uniformCostSearch(graph, origin_city, destination_city):
     while True:
         # if the fringe is empty ---> return fail
         if len(fringe) == 0:
+            print("Nodes expanded: " + str(nodesExpanded))
+            print("Nodes generated: " + str(nodesGenerated))
+            print("Distance: infinity")
+            print("Route:\nnone")
             return "search failed"
  
 
@@ -105,7 +111,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
 
             print("Nodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
-            print("The distance between them is : " + str(currentNode[1]) + " km")
+            print("Distance: " + str(currentNode[1]) + " km")
             print("Route:")
             findPath(destination_city, expandedList, graph)
             return "\n"
@@ -161,8 +167,28 @@ input_filename = sys.argv[1]
 origin_city = sys.argv[2]
 destination_city = sys.argv[3]
 
+# Store heuristic into dictionary
 if (n == 5):
     heuristic_filename = sys.argv[4]
+
+    h_file = open(heuristic_filename,'r')
+    Lines = h_file.readlines()
+
+    # h_dict is the dictionary storing the values from the file
+    h_dict = {}
+
+    for line in Lines:
+        # Removes newline
+        currentline = line.strip()
+        # Removes last line (END OF INPUT)
+        if(currentline == 'END OF INPUT'):
+            break
+        #split apart contents of line by the spaces (seperate each operator/operand)
+        key, value = currentline.split(' ') 
+
+        h_dict[key] = value
+
+print(h_dict)
 
 # Step 2: Store input1.txt into array
 
@@ -189,11 +215,7 @@ for line in Lines:
 
 # print(inputArray)
  
-# Prints out all the arguments passed in (except for filename)
-print("\nArguments passed:", end = " ")
-for i in range(1, n):
-    print(sys.argv[i], end = " ")
-print("\n")
+
 
 # Step 3: Perform uninformed/informed search
 
@@ -202,7 +224,8 @@ if (n == 4):
     print("\n\n\n\n")
     print(uniformCostSearch(graph, origin_city, destination_city))
     
-    
+if (n == 5):
+    print("\nPerforming informed search\n")   
 
 
 # Close file
