@@ -5,9 +5,12 @@ import sys
 from collections import defaultdict
 
 # ---- Node ---- #
-# [city, total_cost , parent, heuristic, fn] #
+# [city,  g(n) , parent,  h(n) , f(n) ] #
 
-# python3 find_route.py input1.txt Bremen Kassel h_kassel.txt
+### ----- HOW TO COMPLILE -------- ###
+# python3 find_route.py input1.txt Bremen Kassel ---------------------> Uninformed (UCS)
+# python3 find_route.py input1.txt London Kassel ---------------------> No path example
+# python3 find_route.py input1.txt Bremen Kassel h_kassel.txt --------> Informed
 
 def findPath(destination_city, expandedList, graph):
 
@@ -17,6 +20,7 @@ def findPath(destination_city, expandedList, graph):
     
     # stores goal node as the first child node
     childNode = destination_city
+
 
     # This essentially traces back the path we took from 
     # the goal to the start
@@ -41,31 +45,40 @@ def expand(currentNode, graph):
     successors = []
 
     # print(graph)
-    print(currentNode)
+    # print(currentNode)
 
     # Finds all of the cities currentNode is connected to
     for child in graph[currentNode[0]]:
-        # print(child)
 
+        # g(n)
         # The distance from the start node is the 
         # cost of the current node(from start) + cost of current node to child
-        distance = currentNode[1] + int(graph[currentNode[0]][child])
-
-        # print("The distance is:  ", end="")
-        # print(distance)
+        gn = currentNode[1] + int(graph[currentNode[0]][child])
 
         # Stores the parent of the child (currentNode) in a variable
         parent = currentNode[0]
 
+
+
         # This creates a new node with the child 
         # and direct distance from the start
-        s = [child,distance,parent]
-        # print(s)
+
+        # UCS
+        if(n == 4):
+            s = [child,gn,parent,0,gn]
+
+        # Informed
+        # h(n) is the heuristic
+        # Informed search will consider f(n), which is h(n) + g(n), instead of just g(n)
+        if(n == 5):
+            #print("------------------------")
+            #print(h_dict[child])
+            hn = int(h_dict[child])
+            fn = gn + hn
+            s = [child,gn,parent,hn,fn]
 
         # Add each successor to the array
         successors.append(s)
-
-    # print(successors)
 
     # Return array of successors 
     # [name,cost from start] of each child
@@ -73,7 +86,7 @@ def expand(currentNode, graph):
 
 
 def uniformCostSearch(graph, origin_city, destination_city):
-    print("Performing uninformed search....\n")
+    # print("Performing uninformed search....\n")
 
     closed = []
     fringe = []
@@ -83,7 +96,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
 
     expandedList = []
 
-    fringe.append([origin_city,0,"origin"])
+    fringe.append([origin_city,0,"origin",0,0])
     nodesGenerated = + 1
 
 
@@ -91,11 +104,11 @@ def uniformCostSearch(graph, origin_city, destination_city):
     while True:
         # if the fringe is empty ---> return fail
         if len(fringe) == 0:
-            print("Nodes expanded: " + str(nodesExpanded))
+            print("\nNodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
             print("Distance: infinity")
             print("Route:\nnone")
-            return "search failed"
+            return " "
  
 
         # pop node from fringe
@@ -109,7 +122,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
             # Adds goal node to expanded list (goal is not expanded, but this allows us to calculate the path)
             expandedList.append(currentNode)
 
-            print("Nodes expanded: " + str(nodesExpanded))
+            print("\nNodes expanded: " + str(nodesExpanded))
             print("Nodes generated: " + str(nodesGenerated))
             print("Distance: " + str(currentNode[1]) + " km")
             print("Route:")
@@ -129,15 +142,22 @@ def uniformCostSearch(graph, origin_city, destination_city):
             fringe = fringe + successors
             
 
-            # Sort the fringe
-            fringe.sort(key=lambda x: x[1])
+            # Sort the fringe (different for uninformed/informed)
 
-            # 
-            print("Fringe:")
-            print(fringe)
-            print("Closed:")
-            print(closed)
-            print("\n\n")
+            # Uninformed - [Sorts by g(n)]
+            if(n == 4):
+                fringe.sort(key=lambda x: x[1])
+            
+            # Informed - [Sorts by f(n) = g(n) + h(n)]
+            if(n == 5):
+                fringe.sort(key=lambda x: x[4])
+
+            # HOMEWORK OUTPUT
+            # print("Fringe:")
+            # print(fringe)
+            # print("Closed:")
+            # print(closed)
+            # print("\n\n")
 
 
             
@@ -149,7 +169,7 @@ def generateDirectedGraph(inputArray):
         graph[city2][city1] = cost
     return graph
 
-print("\n\nthis is the find route program\n\n")
+# print("\n\nthis is the find route program\n\n")
 
 # find_route --------------- sys.argv[0]
 # input_filename ----------- sys.argv[1]
@@ -159,7 +179,7 @@ print("\n\nthis is the find route program\n\n")
 
 # Stores the total number of arguments
 n = len(sys.argv)
-print("Total arguments passed:", n)
+# print("Total arguments passed:", n)
  
 
 # Step 1: Store the command line arguments into variables
@@ -188,7 +208,7 @@ if (n == 5):
 
         h_dict[key] = value
 
-print(h_dict)
+    # print(h_dict)
 
 # Step 2: Store input1.txt into array
 
@@ -211,22 +231,18 @@ for line in Lines:
     inputArray.append(tokens)
     # print(tokens)
 
-    
-
-# print(inputArray)
- 
 
 
 # Step 3: Perform uninformed/informed search
 
+# Store input file as a 2D dictionary
+graph = generateDirectedGraph(inputArray)
+
 if (n == 4):
-    graph = generateDirectedGraph(inputArray)
-    print("\n\n\n\n")
     print(uniformCostSearch(graph, origin_city, destination_city))
     
 if (n == 5):
-    print("\nPerforming informed search\n")   
-
+    print(uniformCostSearch(graph, origin_city, destination_city))
 
 # Close file
 inputFile.close()
