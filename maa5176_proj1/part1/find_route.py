@@ -97,7 +97,9 @@ def uniformCostSearch(graph, origin_city, destination_city):
     expandedList = []
 
     fringe.append([origin_city,0,"origin",0,0])
-    nodesGenerated = + 1
+    nodesGenerated += 1
+    
+
 
 
 
