@@ -5,7 +5,7 @@
 # Written to be Python 2.4 compatible for omega
 
 ### HOW TO COMPILE ###
-# python3 maxconnect4.py one-move input1.txt output1.txt 10 ----> one move mode
+# python3 maxconnect4.py one-move input1.txt output1.txt 3 ----> one move mode
 # python3 maxconnect4.py interactive input1.txt computer-next 1 ----> Interactive (Computer Next)
 # python3 maxconnect4.py interactive input1.txt human-next 1 ----> Interactive (Human Next)
 
@@ -57,21 +57,24 @@ class maxConnect4Game:
 
     # The AI section. Currently plays randomly.
     def aiPlay(self):
-        randColumn = random.randrange(0,7)
+        
 
+        depth = int(sys.argv[4])
+        # print("The depth is: ")
+        # print(depth)
         
         # Call minimax to get the best value
-        trash, randColumn = self.minimax( 5, -100, 100 , True , self.currentTurn)
+        trash, randColumn = self.minimax( depth , -100, 100 , True , self.currentTurn)
 
-        result = self.playPiece(randColumn)
-        if not result:
-            self.aiPlay()
-        else:
-            print('\n\nmove %d: Player %d, column %d\n' % (self.pieceCount, self.currentTurn, randColumn+1))
-            if self.currentTurn == 1:
-                self.currentTurn = 2
-            elif self.currentTurn == 2:
-                self.currentTurn = 1
+
+        
+        self.playPiece(randColumn)
+       
+        print('\n\nmove %d: Player %d, column %d\n' % (self.pieceCount, self.currentTurn, randColumn+1))
+        if self.currentTurn == 1:
+            self.currentTurn = 2
+        elif self.currentTurn == 2:
+            self.currentTurn = 1
     
     ##### -------------- MINIMAX FUNCTION -------------- #####
 

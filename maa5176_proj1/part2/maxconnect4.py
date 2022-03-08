@@ -26,7 +26,54 @@ def oneMoveGame(currentGame):
 
 def interactiveGame(currentGame):
     # Fill me in
-    sys.exit('Interactive mode is currently not implemented')
+
+    print("----------- INTERACTIVE MODE ----------- ")
+
+    command = sys.argv[3]
+
+    print(command)
+
+    currentGame.checkPieceCount()
+
+    while(currentGame.pieceCount < 42):
+        if (command == "computer-next"):
+            # Computer plays
+            currentGame.aiPlay()
+
+
+            # Print the board
+            currentGame.printGameBoard()
+            
+            # Switches over to the human
+            command = "human-next"
+        elif (command == "human-next"):
+            # Human plays
+            
+            # Person enters column
+            humanInput = int(input("Enter a value between 0 and 6:  "))
+
+            # Plays piece at column specified by human
+            currentGame.playPiece(humanInput)
+
+            # Print the board
+            currentGame.printGameBoard()
+
+            # --- Switch computer and human --- #
+            if(currentGame.currentTurn == 1):
+                currentGame.currentTurn == 2
+            elif(currentGame.currentTurn == 2):
+                currentGame.currentTurn == 1
+            # -------------------------------- #
+            
+            # Switches back to the computer
+            command = "computer-next"
+    
+
+
+    
+
+
+    # sys.exit('Interactive mode is currently not implemented')
 
 
 def main(argv):
