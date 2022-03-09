@@ -115,6 +115,7 @@ def uniformCostSearch(graph, origin_city, destination_city):
 
         # pop node from fringe
         currentNode = fringe.pop(0)
+        nodesExpanded+=1
 
         # Goal test
         if (currentNode[0] == destination_city):
@@ -139,7 +140,6 @@ def uniformCostSearch(graph, origin_city, destination_city):
             # Expand node
             expandedList.append(currentNode)
             successors = expand(currentNode, graph)
-            nodesExpanded+=1
             nodesGenerated += len(successors)
             fringe = fringe + successors
             

@@ -67,7 +67,7 @@ class maxConnect4Game:
         trash, randColumn = self.minimax( depth , -100, 100 , True , self.currentTurn)
 
 
-        
+        # Play the most optimal position
         self.playPiece(randColumn)
        
         print('\n\nmove %d: Player %d, column %d\n' % (self.pieceCount, self.currentTurn, randColumn+1))
@@ -85,7 +85,7 @@ class maxConnect4Game:
         self.countScore()
         if (depth == 0 or self.pieceCount == 42):
             if(player == 1):
-                return self.player1Score-self.player2Score, None
+                return self.player1Score - self.player2Score, None
             else:
                 return self.player2Score - self.player1Score, None
 
@@ -101,10 +101,21 @@ class maxConnect4Game:
 
                     # Unplay potential move
                     self.unplayPiece(i)
-
+                    
+                    
                     maxEval = max(maxEval, eval)
-                    if maxEval > eval:
+                    
+
+                    #print("bruhhhhhhhh - max eval: ", end="")
+                    #print(maxEval)
+
+                    if (maxEval > eval):
                         col = i
+                        # print("THE NEW COLUMN IS:", end="")
+                        # print(col)
+                    
+                    
+
                     alpha = max(alpha, eval)
 
                     if (beta <= alpha):
@@ -128,9 +139,14 @@ class maxConnect4Game:
                     # Unplay potential move
                     self.unplayPiece(i)
 
+                    #print("momentttttttttt -- minEval: ", end="")
+                    #print(minEval)
+
                     minEval = min(minEval, eval)
                     if(minEval < eval):
                         col = i
+                        # print("THE NEW COLUMN IS:", end="")
+                        # print(col)
                     beta = min(beta, eval)
                     if(beta <= alpha):
                         break

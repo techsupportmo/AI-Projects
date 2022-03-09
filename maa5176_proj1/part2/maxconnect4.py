@@ -43,6 +43,8 @@ def interactiveGame(currentGame):
 
             # Print the board
             currentGame.printGameBoard()
+
+
             
             # Switches over to the human
             command = "human-next"
@@ -60,10 +62,12 @@ def interactiveGame(currentGame):
 
             # --- Switch computer and human --- #
             if(currentGame.currentTurn == 1):
-                currentGame.currentTurn == 2
+                currentGame.currentTurn = 2
             elif(currentGame.currentTurn == 2):
-                currentGame.currentTurn == 1
+                currentGame.currentTurn = 1
             # -------------------------------- #
+
+
             
             # Switches back to the computer
             command = "computer-next"
