@@ -21,6 +21,11 @@ lime = {0, 0.25, 0.5, 0.75, 100}    # Percentage of lime candies in the bag
 cherry = {100, 0.75, 0.5, 0.25, 0}  # Percentage of cherry candies in the bag
 
 
+# INITIAL
+currentProb = h                     # To start, probability values are same as hypothesis
+
+
+
 # Arguments passed
 print("\nObservation sequence Q:", Q)
 print("Length of Q:", length)
