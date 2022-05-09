@@ -10,7 +10,7 @@ import sys
 def computeProbability():
     return 1
 
-def printProbability(h_values):
+def printProbability(h_values, c_next, l_next):
     print("P(h1 | Q) = ", end="")
     print(h_values[0])
     print("P(h2 | Q) = ", end="")
@@ -22,30 +22,39 @@ def printProbability(h_values):
     print("P(h5 | Q) = ", end="")
     print(h_values[4])
 
+    print("Probability that the next candy we pick will be C, given Q: ", end="")
+    print(c_next)
+    print("Probability that the next candy we pick will be L, given Q: ", end="")
+    print(l_next)
+
 
 
 n = len(sys.argv)                       # number of arguments passed in
 
 observationCount = 0                    # Observation Count
 h = [0.1, 0.2, 0.4, 0.2, 0.1]           # 5 types of bags of candy - 10% are h1, 20% are h2, etc...
-lime = {0, 0.25, 0.5, 0.75, 100}        # Percentage of lime candies in the bag
-cherry = {100, 0.75, 0.5, 0.25, 0}      # Percentage of cherry candies in the bag
+lime = [0, 0.25, 0.5, 0.75, 1]        # Percentage of lime candies in the bag
+cherry = [1, 0.75, 0.5, 0.25, 0]      # Percentage of cherry candies in the bag
 
 
 # INITIAL
 currentProb = h                         # To start, probability values are same as hypothesis
 prevProb = h                            # Initially, the probabilities are the same as the hypothesis
+lime_prob = lime
+cherry_prob = cherry
+c_next = 0.5
+l_next = 0.5
 
 # NO COMMANDS ENTERED
 if(n == 1):
     print("No Observations Made\n")
-    printProbability(currentProb)       # If there are no commands entered, then the initial hypothesis is printed
-    quit()                              # End program
+    printProbability(currentProb, c_next, l_next)       # If there are no commands entered, then the initial hypothesis is printed
+    quit()                                              # End program
 
 
 # Q                                     # Take in command line argument - 
 Q = sys.argv[1]                         # Q is a string representing a series of observations ex. CLLCCCLLL                               
-length = 1#len(Q)                       # Length of Q
+length = 2#len(Q)                       # Length of Q
 
 
 
@@ -63,25 +72,30 @@ while(observationCount < length):
     # Check whether observation is a lime or cherry
     if (Qj == 'C'):
         print("Cherry")
+
+        # Calculate Pt(hi)
+        # (constant h probability * previous prob of cherry)/ probability of cherry next computed previously
+        for i in range (5):
+            currentProb[i] = cherry_prob[i] * prevProb[i] / c_next
+
+        # Resetting probability of cherry next so I can calculate new value, based on updated probability
+        c_next = 0                                          
+        for i in range (5):
+            c_next += cherry_prob[i] * currentProb[i]
+
+        # Compute the probability of lime next, which is 1 - probability of cherry next
+        l_next = 1 - c_next 
+
+        printProbability(currentProb, c_next, l_next)
+
+
+        # prevProb[i] = currentProb[i]
+
+
     elif(Qj == 'L'):
         print("Lime")
 
 
-    print("P(h1 | Q) = ", end="")
-    print("BLANK")
-    print("P(h2 | Q) = ", end="")
-    print("BLANK")
-    print("P(h3 | Q) = ", end="")
-    print("BLANK")
-    print("P(h4 | Q) = ", end="")
-    print("BLANK")
-    print("P(h5 | Q) = ", end="")
-    print("BLANK")
-
-    print("Probability that the next candy we pick will be C, given Q: ", end="")
-    print("")
-    print("Probability that the next candy we pick will be L, given Q: ", end="")
-    print("")
 
 
 
