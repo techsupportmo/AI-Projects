@@ -3,7 +3,7 @@
 
 # HOW TO RUN
 # Type into command line:
-# compute_a_posteriori CLLCCLLLCCL
+# compute_a_posteriori 
 
 import sys
 
@@ -54,7 +54,7 @@ if(n == 1):
 
 # Q                                     # Take in command line argument - 
 Q = sys.argv[1]                         # Q is a string representing a series of observations ex. CLLCCCLLL                               
-length = 2#len(Q)                       # Length of Q
+length = len(Q)                         # Length of Q
 
 
 
@@ -73,15 +73,16 @@ while(observationCount < length):
     if (Qj == 'C'):
         print("Cherry")
 
+
         # Calculate Pt(hi)
-        # (constant h probability * previous prob of cherry)/ probability of cherry next computed previously
+        # (constant cherry probability * previous prob of cherry)/ probability of cherry next computed previously
         for i in range (5):
-            currentProb[i] = cherry_prob[i] * prevProb[i] / c_next
+            currentProb[i] = cherry[i] * currentProb[i] / c_next
 
         # Resetting probability of cherry next so I can calculate new value, based on updated probability
         c_next = 0                                          
         for i in range (5):
-            c_next += cherry_prob[i] * currentProb[i]
+            c_next += cherry[i] * currentProb[i]
 
         # Compute the probability of lime next, which is 1 - probability of cherry next
         l_next = 1 - c_next 
@@ -89,11 +90,23 @@ while(observationCount < length):
         printProbability(currentProb, c_next, l_next)
 
 
-        # prevProb[i] = currentProb[i]
-
-
     elif(Qj == 'L'):
         print("Lime")
+
+        # Calculate Pt(hi)
+        # (constant cherry probability * previous prob of cherry)/ probability of cherry next computed previously
+        for i in range (5):
+            currentProb[i] = lime[i] * currentProb[i] / l_next
+
+        # Resetting probability of cherry next so I can calculate new value, based on updated probability
+        l_next = 0                                          
+        for i in range (5):
+            l_next += lime[i] * currentProb[i]
+
+        # Compute the probability of lime next, which is 1 - probability of cherry next
+        c_next = 1 - l_next 
+
+        printProbability(currentProb, c_next, l_next)
 
 
 
