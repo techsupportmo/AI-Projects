@@ -6,10 +6,43 @@
 # compute_a_posteriori CCCCC
 
 import sys
+import os
 
-def computeProbability():
-    return 1
+# FILE HANDLING
+f = open("result.txt", "w")             # Creates file if it doesn't exist already
 
+# -----------------------------------------------------------------------------------
+# Function: WriteResults()
+# Purpose:  Write the probabilities (same output as print statements) to results.txt file
+# Input:    Array with h values, Cherry next probability, Lime next probability
+# Output:   Nothing, only print statements
+def writeResults(h_values, c_next, l_next):
+    f.write(f"P(h1 | Q) = {h_values[0]:0.5f}\n")
+    #f.write("0.5%h_values[0])
+    f.write(f"P(h2 | Q) = {h_values[1]:0.5f}\n")
+    #f.write(str(h_values[1]))
+    f.write(f"P(h3 | Q) = {h_values[2]:0.5f}\n")
+    #f.write(str(h_values[2]))
+    f.write(f"P(h4 | Q) = {h_values[3]:0.5f}\n")
+    #f.write(str(h_values[3]))
+    f.write(f"P(h5 | Q) = {h_values[4]:0.5f}\n")
+    #.write(str(h_values[4]))
+
+    f.write(f"Probability that the next candy we pick will be C, given Q: {c_next:0.5f}\n")
+    #f.write(str(c_next))
+    f.write(f"Probability that the next candy we pick will be L, given Q: {l_next:0.5f}\n")
+    #f.write(str(l_next))
+# -----------------------------------------------------------------------------------
+
+
+
+
+
+# -----------------------------------------------------------------------------------
+# Function: PrintProbability()
+# Purpose:  Print out probability values to the screen
+# Input:    Array with h values, Cherry next probability, Lime next probability
+# Output:   Nothing, only print statements
 def printProbability(h_values, c_next, l_next):
     print("P(h1 | Q) = ", end="")
     print(h_values[0])
@@ -26,7 +59,7 @@ def printProbability(h_values, c_next, l_next):
     print(c_next)
     print("Probability that the next candy we pick will be L, given Q: ", end="")
     print(l_next)
-
+# -----------------------------------------------------------------------------------
 
 
 n = len(sys.argv)                       # number of arguments passed in
@@ -48,7 +81,9 @@ l_next = 0.5
 # NO COMMANDS ENTERED
 if(n == 1):
     print("No Observations Made\n")
+    f.write("No Observations Made\n")
     printProbability(currentProb, c_next, l_next)       # If there are no commands entered, then the initial hypothesis is printed
+    writeResults(currentProb, c_next, l_next)
     quit()                                              # End program
 
 
@@ -59,15 +94,22 @@ length = len(Q)                         # Length of Q
 
 
 # Arguments passed
-print("\nObservation sequence Q:", Q)
+print("\nObservation sequence Q: ", Q)
+f.write(f"\nObservation sequence Q: {Q}\n")
+
 print("Length of Q:", length)
+f.write(f"Length of Q:{length}\n")
 
 while(observationCount < length):
     Qj = Q[observationCount]                                # Current letter being observed
     observationCount+=1                                     # Increment observation count (starts at 1)
+
     print("\n\nAfter observation ", end="")
     print(observationCount, end="")
     print(" = " + Qj + ": ")
+
+    f.write(f"\n\nAfter observation {observationCount}\n")
+
 
     # Check whether observation is a lime or cherry
     if (Qj == 'C'):
@@ -88,6 +130,7 @@ while(observationCount < length):
         l_next = 1 - c_next 
 
         printProbability(currentProb, c_next, l_next)
+        writeResults(currentProb, c_next, l_next)
 
 
     elif(Qj == 'L'):
@@ -107,10 +150,9 @@ while(observationCount < length):
         c_next = 1 - l_next 
 
         printProbability(currentProb, c_next, l_next)
+        writeResults(currentProb, c_next, l_next)
 
 
 
 
-
-
-print("hello world")
+f.close()       # Close file
