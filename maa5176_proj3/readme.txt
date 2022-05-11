@@ -28,5 +28,9 @@ Programming Language Used: Python
 
 Code Structure:
 
+- Arrays to store probability values
+- Dictionaries to store specific T/F values
+
+
 
 ------------------------------------------------------------------------------------------
