@@ -9,7 +9,7 @@ n = len(sys.argv)                       # number of arguments passed in
 # Possible characters for input:
 # Bt, Bf, Et, Ef, At, Af, Jt, Jf, Mt, Mf, given
 
-total_prob = 0          # Total probability calculated
+total_prob = 1          # Total probability calculated
 givenPresent = False    # Checks if the keyword 'Given' is present in the code
 input = []              # Array to store input
 
@@ -97,7 +97,20 @@ for i in range(1, n):
 print(input)
 
 # Calculate Probability without any givens
-
+for i in input:
+    if( sys.argv[1] == "Bt"):
+        total_prob = total_prob * p_burglary
+    elif(sys.argv[1] == "Bf"):
+        total_prob = total_prob * (1 - p_burglary)
+    elif(sys.argv[1] == "Et"):
+        total_prob = total_prob * p_earthquake
+    elif(sys.argv[1] == "Ef"):
+        total_prob = total_prob * (1 - p_earthquake)
+    elif(sys.argv[1] == "At"):
+        if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Have to repeat this for all 4 values
+             total_prob = total_prob * p_alarm[0][2]
+    elif(sys.argv[1] == "Af"):
+        total_prob = total_prob * (1 - p_earthquake)    
 
 
 # Inference By Enumeration
