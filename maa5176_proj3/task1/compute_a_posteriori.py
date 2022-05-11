@@ -3,7 +3,7 @@
 
 # HOW TO RUN
 # Type into command line:
-# compute_a_posteriori 
+# compute_a_posteriori CCCCC
 
 import sys
 
