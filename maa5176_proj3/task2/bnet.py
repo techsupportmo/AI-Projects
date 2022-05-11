@@ -2,7 +2,7 @@
 # 1001655176
 
 import sys
-import numpy
+
 
 n = len(sys.argv)                       # number of arguments passed in
 
@@ -25,7 +25,7 @@ johnCalls_dict = {
 }
 
 # Dictionary to store maryCalls value
-johnCalls_dict = {
+maryCalls_dict = {
   "A_value": None,
 }
 
@@ -85,6 +85,12 @@ for i in range(1, n):
         alarm_dict["E_value"] = True
     elif(sys.argv[i] == "Ef"):
         alarm_dict["E_value"] = False
+    elif(sys.argv[i] == "At"):
+        johnCalls_dict["A_value"] = True
+        maryCalls_dict["A_value"] = True
+    elif(sys.argv[i] == "Af"):
+        johnCalls_dict["A_value"] = False
+        maryCalls_dict["A_value"] = False
     
     input.append(sys.argv[i])       # Store input
 
