@@ -64,64 +64,81 @@ if(n == 2):
         total_prob = p_earthquake
     elif(sys.argv[1] == "Ef"):
         total_prob = 1 - p_earthquake
-
-# Print Probability
-print(f"The probability is: {total_prob}")
-
-# Parse input
-for i in range(1, n):
-    print(sys.argv[i], end = " ")
-
-    # Checks if token is 'given' keyword
-    if(sys.argv[i] == "given"):
-        givenPresent = True
-    
-    # Updates T/F values for children
-    if( sys.argv[i] == "Bt"):
-        alarm_dict["B_value"] = True
-    elif(sys.argv[i] == "Bf"):
-        alarm_dict["B_value"] = False
-    elif(sys.argv[i] == "Et"):
-        alarm_dict["E_value"] = True
-    elif(sys.argv[i] == "Ef"):
-        alarm_dict["E_value"] = False
-    elif(sys.argv[i] == "At"):
-        johnCalls_dict["A_value"] = True
-        maryCalls_dict["A_value"] = True
-    elif(sys.argv[i] == "Af"):
-        johnCalls_dict["A_value"] = False
-        maryCalls_dict["A_value"] = False
-    
-    input.append(sys.argv[i])       # Store input
-
-print(input)
-
-# Calculate Probability without any givens
-for i in input:
-    if( sys.argv[1] == "Bt"):
-        total_prob = total_prob * p_burglary
-    elif(sys.argv[1] == "Bf"):
-        total_prob = total_prob * (1 - p_burglary)
-    elif(sys.argv[1] == "Et"):
-        total_prob = total_prob * p_earthquake
-    elif(sys.argv[1] == "Ef"):
-        total_prob = total_prob * (1 - p_earthquake)
-    elif(sys.argv[1] == "At"):
-        if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Have to repeat this for all 4 values
-             total_prob = total_prob * p_alarm[0][2]
-    elif(sys.argv[1] == "Af"):
-        total_prob = total_prob * (1 - p_earthquake)    
+    # Print Probability
+    print(f"The probability is: {total_prob}")
 
 
-# Inference By Enumeration
+
+
+if (n > 2 and n <= 6):
+    # Parse input
+    for i in range(1, n):
+        print(sys.argv[i], end = " ")
+
+        # Checks if token is 'given' keyword
+        if(sys.argv[i] == "given"):
+            givenPresent = True
+        
+        # Updates T/F values for children
+        if( sys.argv[i] == "Bt"):
+            alarm_dict["B_value"] = True
+        elif(sys.argv[i] == "Bf"):
+            alarm_dict["B_value"] = False
+        elif(sys.argv[i] == "Et"):
+            alarm_dict["E_value"] = True
+        elif(sys.argv[i] == "Ef"):
+            alarm_dict["E_value"] = False
+        elif(sys.argv[i] == "At"):
+            johnCalls_dict["A_value"] = True
+            maryCalls_dict["A_value"] = True
+        elif(sys.argv[i] == "Af"):
+            johnCalls_dict["A_value"] = False
+            maryCalls_dict["A_value"] = False
+        
+        input.append(sys.argv[i])       # Store input
+
+    print(input)
+
+    # Calculate Probability without any givens
+    for i in range(len(input) + 1):
+        if( sys.argv[i] == "Bt"):
+            total_prob = total_prob * p_burglary
+            print("INSIDE BT")
+        elif(sys.argv[i] == "Bf"):
+            total_prob = total_prob * (1 - p_burglary)
+            print("INSIDE BF")
+        elif(sys.argv[i] == "Et"):
+            total_prob = total_prob * p_earthquake
+            print("INSIDE ET")
+        elif(sys.argv[i] == "Ef"):
+            total_prob = total_prob * (1 - p_earthquake)
+            print("INSIDE EF")
+        elif(sys.argv[i] == "At"):
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Alarm when B = T and E = T
+                total_prob = total_prob * p_alarm[0][2]
+                print("INSIDE AT - BOTH TRUE")
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == False):      # Alarm when B = T and E = F
+                total_prob = total_prob * p_alarm[1][2]
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == True):      # Alarm when B = F and E = T
+                total_prob = total_prob * p_alarm[2][2]
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == False):     # Alarm when B = F and E = F
+                total_prob = total_prob * p_alarm[3][2]           
+        elif(sys.argv[i] == "Af"):
+            total_prob = total_prob * (1 - p_earthquake)    
+
+
+    # Inference By Enumeration
+
+    # Print Probability
+    print(f"The probability is: {total_prob:0.16f}")
 
 
 
 
 # Debug
 # Arguments passed
-print("\nName of Python script:", sys.argv[0])
+#print("\nName of Python script:", sys.argv[0])
  
-print("\nArguments passed:", end = " ")
-for i in range(1, n):
-    print(sys.argv[i], end = " ")
+#print("\nArguments passed:", end = " ")
+#for i in range(1, n):
+    #print(sys.argv[i], end = " ")
