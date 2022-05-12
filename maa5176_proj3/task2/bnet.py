@@ -114,17 +114,46 @@ if (n > 2 and n <= 6):
             total_prob = total_prob * (1 - p_earthquake)
             print("INSIDE EF")
         elif(sys.argv[i] == "At"):
-            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Alarm when B = T and E = T
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Alarm = T when B = T and E = T
                 total_prob = total_prob * p_alarm[0][2]
                 print("INSIDE AT - BOTH TRUE")
-            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == False):      # Alarm when B = T and E = F
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == False):      # Alarm = T when B = T and E = F
                 total_prob = total_prob * p_alarm[1][2]
-            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == True):      # Alarm when B = F and E = T
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == True):      # Alarm = T when B = F and E = T
                 total_prob = total_prob * p_alarm[2][2]
-            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == False):     # Alarm when B = F and E = F
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == False):     # Alarm = T when B = F and E = F
                 total_prob = total_prob * p_alarm[3][2]           
         elif(sys.argv[i] == "Af"):
-            total_prob = total_prob * (1 - p_earthquake)    
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == True):       # Alarm = F when B = T and E = T
+                total_prob = total_prob * (1 - p_alarm[0][2])
+                print("INSIDE AF - BOTH TRUE")
+            if( alarm_dict["B_value"] == True and alarm_dict["E_value"] == False):      # Alarm = F when B = T and E = F
+                total_prob = total_prob * (1 - p_alarm[1][2])
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == True):      # Alarm = F when B = F and E = T
+                total_prob = total_prob * (1 - p_alarm[2][2])
+            if( alarm_dict["B_value"] == False and alarm_dict["E_value"] == False):     # Alarm = F when B = F and E = F
+                total_prob = total_prob * (1 - p_alarm[3][2])
+        elif (sys.argv[i] == "Jt"): 
+            if(johnCalls_dict["A_value"] == True):                                      # JohnCalls = T when Alarm = T
+                 total_prob = total_prob * p_johnCalls[0][1]
+            if(johnCalls_dict["A_value"] == False):                                     # JohnCalls = T when Alarm = F
+                 total_prob = total_prob * p_johnCalls[1][1]
+        elif (sys.argv[i] == "Jf"):
+            if(johnCalls_dict["A_value"] == True):                                      # JohnCalls = F when Alarm = T
+                 total_prob = total_prob * (1 - p_johnCalls[0][1])
+            if(johnCalls_dict["A_value"] == False):                                     # JohnCalls = F when Alarm = F
+                 total_prob = total_prob * (1 - p_johnCalls[1][1])
+        elif (sys.argv[i] == "Mt"):
+            if(maryCalls_dict["A_value"] == True):
+                total_prob = total_prob * p_maryCalls[0][1]                             # MaryCalls = T when Alarm = T
+            if(maryCalls_dict["A_value"] == False):
+                total_prob = total_prob * p_maryCalls[1][1]                             # MaryCalls = T when Alarm = T
+        elif (sys.argv[i] == "Mf"):
+            if(maryCalls_dict["A_value"] == True):
+                total_prob = total_prob * (1 - p_maryCalls[0][1])                       # MaryCalls = F when Alarm = T
+            if(maryCalls_dict["A_value"] == False):
+                total_prob = total_prob * (1 - p_maryCalls[1][1])                       # MaryCalls = F when Alarm = F
+
 
 
     # Inference By Enumeration
